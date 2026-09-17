@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Phoenix Discovery — Antiques</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Georgia, "Times New Roman", serif;
+      background: #faf8f4;
+      color: #2a2218;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      background: #2a2218;
+      color: #f5f0e8;
+      padding: 3rem 1.5rem 2.5rem;
+      text-align: center;
+    }
+    .hero-tag {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #c9a96e;
+      margin-bottom: 1rem;
+      font-family: -apple-system, sans-serif;
+    }
+    .hero h1 {
+      font-size: 32px;
+      font-weight: normal;
+      line-height: 1.25;
+      margin-bottom: 0.75rem;
+    }
+    .hero p {
+      font-size: 15px;
+      color: #b5a990;
+      line-height: 1.7;
+      max-width: 340px;
+      margin: 0 auto 1.75rem;
+      font-family: -apple-system, sans-serif;
+    }
+    .hero-contact {
+      display: inline-block;
+      padding: 0.7rem 1.75rem;
+      border: 1px solid #c9a96e;
+      border-radius: 4px;
+      color: #c9a96e;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+      font-family: -apple-system, sans-serif;
+    }
+
+    /* ── Section ── */
+    .section {
+      padding: 2rem 1rem;
+    }
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+      border-bottom: 1px solid #e5e0d5;
+      padding-bottom: 0.75rem;
+    }
+    .section-head h2 {
+      font-size: 20px;
+      font-weight: normal;
+      color: #2a2218;
+    }
+    .section-head span {
+      font-size: 12px;
+      color: #999;
+      font-family: -apple-system, sans-serif;
+    }
+
+    /* ── Shop grid ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .item-card {
+      background: #fff;
+      border-radius: 8px;
+      border: 1px solid #e5e0d5;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .item-img {
+      width: 100%;
+      aspect-ratio: 1;
+      background: #f0ebe0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      border-bottom: 1px solid #e5e0d5;
+    }
+    .item-info { padding: 0.75rem; }
+    .item-name {
+      font-size: 13px;
+      line-height: 1.4;
+      margin-bottom: 4px;
+      color: #2a2218;
+    }
+    .item-era {
+      font-size: 11px;
+      color: #999;
+      font-family: -apple-system, sans-serif;
+      margin-bottom: 8px;
+    }
+    .item-price {
+      font-size: 15px;
+      color: #2a2218;
+      font-family: -apple-system, sans-serif;
+    }
+    .item-badge {
+      display: inline-block;
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 20px;
+      font-family: -apple-system, sans-serif;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+    .badge-available { background: #dcfce7; color: #166534; }
+    .badge-hold { background: #ede9fe; color: #5b21b6; }
+
+    /* ── About strip ── */
+    .about {
+      background: #2a2218;
+      color: #f5f0e8;
+      padding: 2rem 1.5rem;
+      text-align: center;
+    }
+    .about h2 {
+      font-size: 20px;
+      font-weight: normal;
+      margin-bottom: 1rem;
+      color: #c9a96e;
+    }
+    .about p {
+      font-size: 14px;
+      color: #b5a990;
+      line-height: 1.8;
+      font-family: -apple-system, sans-serif;
+      max-width: 340px;
+      margin: 0 auto;
+    }
+
+    /* ── Contact ── */
+    .contact {
+      padding: 2rem 1.5rem;
+      text-align: center;
+      background: #faf8f4;
+    }
+    .contact h2 {
+      font-size: 20px;
+      font-weight: normal;
+      margin-bottom: 0.5rem;
+    }
+    .contact p {
+      font-size: 13px;
+      color: #888;
+      font-family: -apple-system, sans-serif;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+    .contact-form { display: flex; flex-direction: column; gap: 10px; max-width: 400px; margin: 0 auto; }
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: -apple-system, sans-serif;
+      background: #fff;
+      color: #2a2218;
+    }
+    .contact-form textarea { min-height: 100px; resize: vertical; }
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      outline: none;
+      border-color: #c9a96e;
+      box-shadow: 0 0 0 3px rgba(201,169,110,0.15);
+    }
+    .send-btn {
+      padding: 0.85rem;
+      background: #2a2218;
+      color: #f5f0e8;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      font-family: -apple-system, sans-serif;
+    }
+    .send-btn:hover { background: #3d3224; }
+
+    /* ── Footer ── */
+    .footer {
+      border-top: 1px solid #e5e0d5;
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 12px;
+      color: #bbb;
+      font-family: -apple-system, sans-serif;
+    }
+    .footer a { color: #999; text-decoration: none; margin: 0 8px; }
+
+    /* Admin link — subtle, bottom corner */
+    .admin-link {
+      display: block;
+      text-align: center;
+      font-size: 11px;
+      color: #ccc;
+      text-decoration: none;
+      padding: 0.5rem;
+      font-family: -apple-system, sans-serif;
+    }
+
+    /* Inquiry overlay */
+    .overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+    }
+    .overlay.show { display: flex; }
+    .inquiry-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 1.75rem 1.5rem;
+      text-align: center;
+      max-width: 300px;
+      width: 90%;
+    }
+    .inquiry-icon { font-size: 36px; margin-bottom: 10px; }
+    .inquiry-title { font-size: 18px; margin-bottom: 6px; }
+    .inquiry-sub { font-size: 13px; color: #888; margin-bottom: 1.25rem;
+                   font-family: -apple-system, sans-serif; line-height: 1.6; }
+    .inquiry-close {
+      padding: 0.7rem 2rem;
+      background: #2a2218;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-tag">Curated antiques &amp; vintage finds</div>
+    <h1>Phoenix<br>Discovery</h1>
+    <p>Each piece here has a story. Carefully hunted, lovingly restored, and ready for its next chapter.</p>
+    <a href="#contact" class="hero-contact">Get in touch</a>
+  </div>
+
+  <!-- Shop -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Available pieces</h2>
+      <span>4 items</span>
+    </div>
+    <div class="grid">
+
+      <div class="item-card" onclick="showInquiry('Victorian parlor chair')">
+        <div class="item-img">🪑</div>
+        <div class="item-info">
+          <div class="item-name">Victorian parlor chair</div>
+          <div class="item-era">1880s · Walnut</div>
+          <div class="item-price">$320
+            <span class="item-badge badge-available">Available</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="item-card" onclick="showInquiry('Gilded mirror')">
+        <div class="item-img">🪞</div>
+        <div class="item-info">
+          <div class="item-name">Gilded mirror</div>
+          <div class="item-era">1900s · Ornate frame</div>
+          <div class="item-price">$275
+            <span class="item-badge badge-hold">On hold</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="item-card" onclick="showInquiry('Art Deco side table')">
+        <div class="item-img">🪵</div>
+        <div class="item-info">
+          <div class="item-name">Art Deco side table</div>
+          <div class="item-era">1930s · Mahogany</div>
+          <div class="item-price">$185
+            <span class="item-badge badge-available">Available</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="item-card" onclick="showInquiry('Brass banker lamp')">
+        <div class="item-img">💡</div>
+        <div class="item-info">
+          <div class="item-name">Brass banker lamp</div>
+          <div class="item-era">1940s · Brass</div>
+          <div class="item-price">$140
+            <span class="item-badge badge-available">Available</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- About -->
+  <div class="about">
+    <h2>The story behind the shop</h2>
+    <p>Every piece is personally hunted, researched, and restored with care. What started as a passion became a purpose — giving beautiful old things a second life and a new home.</p>
+  </div>
+
+  <!-- Contact -->
+  <div class="contact" id="contact">
+    <h2>Interested in a piece?</h2>
+    <p>Send a message and we'll get back to you within a day.</p>
+    <div class="contact-form">
+      <input type="text" placeholder="Your name">
+      <input type="text" placeholder="Your email or phone">
+      <textarea placeholder="What are you interested in? Any questions?"></textarea>
+      <button class="send-btn" onclick="sendMessage()">Send message</button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div>© 2025 Phoenix Discovery</div>
+    <div style="margin-top:6px">
+      <a href="shop.html">Shop</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+
+  <a class="admin-link" href="index.html">admin</a>
+
+  <!-- Inquiry overlay -->
+  <div class="overlay" id="overlay">
+    <div class="inquiry-card">
+      <div class="inquiry-icon">🏺</div>
+      <div class="inquiry-title" id="inquiry-title">Interested?</div>
+      <div class="inquiry-sub">Scroll down and send a message — we'll get back to you within a day to arrange a viewing or answer any questions.</div>
+      <button class="inquiry-close" onclick="document.getElementById('overlay').classList.remove('show')">Got it</button>
+    </div>
+  </div>
+
+  <script>
+    function showInquiry(name) {
+      document.getElementById('inquiry-title').textContent = name;
+      document.getElementById('overlay').classList.add('show');
+    }
+
+    function sendMessage() {
+      const inputs = document.querySelectorAll('.contact-form input, .contact-form textarea');
+      let valid = true;
+      inputs.forEach(i => { if (!i.value.trim()) valid = false; });
+      if (!valid) { alert('Please fill in all fields.'); return; }
+      alert('Message sent! We\'ll be in touch soon.');
+      inputs.forEach(i => i.value = '');
+    }
+  </script>
+
+</body>
+</html>
