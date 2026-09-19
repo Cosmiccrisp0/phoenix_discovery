@@ -174,25 +174,25 @@
     <span>🔍</span>
   </div>
 
-  <!-- Stats -->
-  <div class="stats">
-    <div class="stat">
-      <div class="stat-label">Total invested</div>
-      <div class="stat-value">$1,240</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">Listed value</div>
-      <div class="stat-value green">$3,850</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">Available</div>
-      <div class="stat-value">9</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">Need refurb</div>
-      <div class="stat-value amber">3</div>
-    </div>
+<!-- Stats -->
+<div class="stats">
+  <div class="stat">
+    <div class="stat-label">Spent this month</div>
+    <div class="stat-value" id="stat-spent">$0</div>
   </div>
+  <div class="stat">
+    <div class="stat-label">Received this month</div>
+    <div class="stat-value green" id="stat-received">$0</div>
+  </div>
+  <div class="stat">
+    <div class="stat-label">Net this month</div>
+    <div class="stat-value" id="stat-net">$0</div>
+  </div>
+  <div class="stat">
+    <div class="stat-label">Items in stock</div>
+    <div class="stat-value" id="stat-stock">0</div>
+  </div>
+</div>
 
   <!-- Filter chips -->
   <div class="filters">
@@ -264,6 +264,94 @@
 
   <!-- Add button -->
   <a class="add-btn" href="add.html">+ Add new item</a>
+
+    <script>
+    // Load items from localStorage and calculate stats
+    function loadStats() {
+      const items = JSON.parse(localStorage.getItem('phoenix_items') || '[]');
+      const now = new Date();
+      const thisMonth = now.getMonth();
+      const thisYear = now.getFullYear();
+
+      let spent = 0;
+      let received = 0;
+      let inStock = 0;
+
+      items.forEach(item => {
+        // Spent — count acquisition cost if added this month
+        const added = new Date(item.dateAdded);
+        if (added.getMonth() === thisMonth && added.getFullYear() === thisYear) {
+          spent += parseFloat(item.paid) || 0;
+        }
+
+        // Received — count sold amount if sold this month
+        if (item.status === 'Sold' && item.dateSold) {
+          const sold = new Date(item.dateSold);
+          if (sold.getMonth() === thisMonth && sold.getFullYear() === thisYear) {
+            received += parseFloat(item.soldFor) || 0;
+          }
+        }
+
+        // In stock — available or on hold
+        if (item.status === 'Available' || item.status === 'On hold' || item.status === 'Refurbishing') {
+          inStock++;
+        }
+      });
+
+      const net = received - spent;
+
+      document.getElementById('stat-spent').textContent = '$' + spent.toFixed(0);
+      document.getElementById('stat-received').textContent = '$' + received.toFixed(0);
+
+      const netEl = document.getElementById('stat-net');
+      netEl.textContent = (net >= 0 ? '+' : '') + '$' + net.toFixed(0);
+      netEl.style.color = net >= 0 ? '#1d8a5e' : '#b91c1c';
+
+      document.getElementById('stat-stock').textContent = inStock;
+
+      // Load item cards from storage
+      loadItems(items);
+    }
+
+    function loadItems(items) {
+      const container = document.querySelector('.items');
+      if (!container) return;
+
+      // Clear sample cards if we have real data
+      if (items.length === 0) return;
+
+      container.innerHTML = '';
+      const statusClass = {
+        'Available': 'badge-available',
+        'Refurbishing': 'badge-refurb',
+        'On hold': 'badge-hold',
+        'Sold': 'badge-sold'
+      };
+      const emoji = {
+        'Chair': '🪑', 'Table': '🪵', 'Cabinet': '🗄️',
+        'Mirror': '🪞', 'Lamp': '💡', 'Dresser': '🪟',
+        'Sofa': '🛋️', 'Artwork': '🖼️', 'Decor': '🏺', 'Other': '📦'
+      };
+
+      items.slice().reverse().forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <div class="thumb">${emoji[item.category] || '📦'}</div>
+          <div class="card-body">
+            <div class="card-name">${item.name} <span class="unit">${item.unit || ''}</span></div>
+            <div class="card-meta">${item.era || ''} · ${item.material || ''} · ${item.condition || ''}</div>
+            <div class="card-row">
+              <span class="price">$${parseFloat(item.asking || 0).toFixed(0)}</span>
+              <span class="badge ${statusClass[item.status] || 'badge-available'}">${item.status || 'Available'}</span>
+            </div>
+          </div>`;
+        container.appendChild(card);
+      });
+    }
+
+    loadStats();
+  </script>
 
 </body>
 </html>
